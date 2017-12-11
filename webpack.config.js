@@ -60,7 +60,8 @@ var config = {
   devServer: {
     contentBase: path.join(__dirname, "server/public"),
     compress: true,
-    port: 9010
+    port: 9010,
+    historyApiFallback: true
   }
 };
 
