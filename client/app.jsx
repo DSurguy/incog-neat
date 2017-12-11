@@ -6,6 +6,8 @@ import {
   Link
 } from 'react-router-dom'
 
+import './app.scss';
+
 const Home = () => (
   <div>
     <h2>Home</h2>
