@@ -1,27 +1,31 @@
 let webpack = require('webpack');
 let path = require('path');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 let BUILD_DIR = path.resolve(__dirname, 'server/public');
 let APP_DIR = path.resolve(__dirname, 'client');
 
 let config = {
-  entry: APP_DIR + '/app.jsx',
+  entry: [`${APP_DIR}/app.jsx`, `${APP_DIR}/app.scss`],
   module: {
     loaders : [
       {
         test : /\.jsx?/,
         include : APP_DIR,
-        loader : 'babel-loader'
+        use: 'babel-loader'
       },
-      {
-        test: /\.scss$/,
-        use: [{
-            loader: "style-loader" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader" // translates CSS into CommonJS
-        }, {
-            loader: "sass-loader" // compiles Sass to CSS
-        }]
+      { // regular css files
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          use: 'css-loader',
+        }),
+      },
+      { // sass / scss loader for webpack
+        test: /\.(sass|scss)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
       }
     ]
   },
@@ -29,6 +33,9 @@ let config = {
     path: BUILD_DIR,
     filename: 'bundle.js'
   },
+  plugins: [
+    new ExtractTextPlugin(`bundle.css`)
+  ],
   devServer: {
     contentBase: path.join(__dirname, "server/public"),
     compress: true,
