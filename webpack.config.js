@@ -6,7 +6,7 @@ let BUILD_DIR = path.resolve(__dirname, 'server/public');
 let APP_DIR = path.resolve(__dirname, 'client');
 
 let config = {
-  entry: [`${APP_DIR}/app.jsx`, `${APP_DIR}/app.scss`],
+  entry: [`${APP_DIR}/index.jsx`],
   module: {
     loaders : [
       {
@@ -14,17 +14,15 @@ let config = {
         include : APP_DIR,
         use: 'babel-loader'
       },
-      { // regular css files
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader',
-        }),
-      },
       { // sass / scss loader for webpack
         test: /\.(sass|scss)$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
+          fallback: 'style-loader?sourceMap',
+          use: [
+            'css-loader?modules=true&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+            'resolve-url-loader',
+            'sass-loader?sourceMap'
+          ]
         })
       }
     ]
