@@ -19,7 +19,7 @@ let config = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader?sourceMap',
           use: [
-            'css-loader?modules=true&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+            'css-loader?importLoaders=1',
             'resolve-url-loader',
             'sass-loader?sourceMap'
           ]
