@@ -62,3 +62,6 @@ server/public/bundle.js
 
 #Cloud 9 IDE
 .c9
+
+# Stupid MEtadata Files
+.DS_Store

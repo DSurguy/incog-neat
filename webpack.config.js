@@ -5,8 +5,14 @@ let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let BUILD_DIR = path.resolve(__dirname, 'server/public');
 let APP_DIR = path.resolve(__dirname, 'client');
 
+let AppCSS = new ExtractTextPlugin('app.css');
+let VendorCSS = new ExtractTextPlugin('vendor.css');
+
 let config = {
-  entry: [`${APP_DIR}/index.jsx`],
+  entry: {
+    app: `${APP_DIR}/index.jsx`,
+    vendor: `${APP_DIR}/vendor/index.js`
+  },
   module: {
     loaders : [
       {
@@ -14,9 +20,16 @@ let config = {
         include : APP_DIR,
         use: 'babel-loader'
       },
+      {
+        test: /\.css$/,
+        use: VendorCSS.extract({
+          fallback: 'style-loader?sourceMap',
+          use: 'css-loader'
+        })
+      },
       { // sass / scss loader for webpack
         test: /\.(sass|scss)$/,
-        use: ExtractTextPlugin.extract({
+        use: AppCSS.extract({
           fallback: 'style-loader?sourceMap',
           use: [
             'css-loader?importLoaders=1',
@@ -29,10 +42,11 @@ let config = {
   },
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   plugins: [
-    new ExtractTextPlugin(`bundle.css`)
+    VendorCSS,
+    AppCSS
   ],
   devServer: {
     contentBase: path.join(__dirname, "server/public"),

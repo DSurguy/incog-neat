@@ -2,8 +2,12 @@
 
 }
 .app-header_ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
   display: flex;
   justify-content: flex-start;
+  flex-direction: row;
   list-style: none;
 }
 .app-header_ul_li{
